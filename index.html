@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="keys">
+      <div data-key="65" class="key">
+        <kbd>A</kbd>
+        <span class="sound">bang</span>
+      </div>
+      <div data-key="83" class="key">
+        <kbd>S</kbd>
+        <span class="sound">bottle</span>
+      </div>
+      <div data-key="68" class="key">
+        <kbd>D</kbd>
+        <span class="sound">cling</span>
+      </div>
+      <div data-key="70" class="key">
+        <kbd>F</kbd>
+        <span class="sound">coin</span>
+      </div>
+      <div data-key="71" class="key">
+        <kbd>G</kbd>
+        <span class="sound">glass</span>
+      </div>
+      <div data-key="72" class="key">
+        <kbd>H</kbd>
+        <span class="sound">paper</span>
+      </div>
+      <div data-key="74" class="key">
+        <kbd>J</kbd>
+        <span class="sound">spring</span>
+      </div>
+      <div data-key="75" class="key">
+        <kbd>K</kbd>
+        <span class="sound">squeak</span>
+      </div>
+      <div data-key="76" class="key">
+        <kbd>L</kbd>
+        <span class="sound">match</span>
+      </div>
+    </div>
+
+    <audio data-key="65" src="sounds/bang_1.wav"></audio>
+    <audio data-key="83" src="sounds/bottle_pop_1.wav"></audio>
+    <audio data-key="68" src="sounds/cling_1.wav"></audio>
+    <audio data-key="70" src="sounds/coin_2.wav"></audio>
+    <audio data-key="71" src="sounds/glass_breaking_1.wav"></audio>
+    <audio data-key="72" src="sounds/paper_tearing_2.wav"></audio>
+    <audio data-key="74" src="sounds/spring_1.wav"></audio>
+    <audio data-key="75" src="sounds/squeeze-toy-1.wav"></audio>
+    <audio data-key="76" src="sounds/striking-a-match-1.wav"></audio>
+
+    <script>
+
+      function playSound(e){
+        // console.log(e.keyCode);
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        if (!audio) return; // stop the function with an early return
+        audio.currentTime = 0; // rewind to the start
+        audio.play();
+        key.classList.add("playing");
+      }
+
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return; //skip if not a transform
+        this.classList.remove("playing");
+      }
+
+      const keys = document.querySelectorAll(".key");
+
+      keys.forEach(key =>
+        key.addEventListener("transitionend", removeTransition)
+      );
+
+      window.addEventListener("keydown", playSound);
+
+    </script>
+  </body>
+</html>
